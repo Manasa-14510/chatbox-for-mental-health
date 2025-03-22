@@ -2,7 +2,7 @@ import streamlit as st
 import openai
 
 # Set up OpenAI client correctly
-client = openai.OpenAI(api_key="your_openai_api_key_here")
+client = openai.OpenAI(api_key="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")
 
 st.title("🧠 Mental Health Chatbox")
 st.write("Feel free to talk. I'm here to listen. 💙")
