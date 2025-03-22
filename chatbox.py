@@ -2,11 +2,15 @@ import streamlit as st
 import openai
 import os
 
-# Set up OpenAI API key securely
-openai.api_key = os.getenv("OPENAI_API_KEY")  # For local use
-# Use Streamlit Secrets for deployment
-if "OPENAI_API_KEY" in st.secrets:
-    openai.api_key = st.secrets["OPENAI_API_KEY"]
+# ✅ Ensure the API key is set correctly
+API_KEY = os.getenv("OPENAI_API_KEY") or st.secrets.get("OPENAI_API_KEY")
+
+if not API_KEY:
+    st.error("🚨 OpenAI API Key is missing! Please set OPENAI_API_KEY in environment variables or Streamlit Secrets.")
+    st.stop()  # Stop execution if API key is missing
+
+# ✅ Create OpenAI client with API key
+client = openai.OpenAI(api_key=API_KEY)
 
 # Streamlit app UI
 st.title("🧠 Mental Health Chatbox")
@@ -30,7 +34,6 @@ if user_input:
 
     try:
         # OpenAI API call
-        client = openai.OpenAI()  # Ensure you're using OpenAI's new client system
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[{"role": m["role"], "content": m["content"]} for m in st.session_state.messages]
@@ -50,3 +53,4 @@ if user_input:
         st.error("🚨 Invalid API Key! Please check your OpenAI API key.")
     except openai.OpenAIError as e:
         st.error(f"⚠️ OpenAI API Error: {e}")
+
