@@ -30,13 +30,14 @@ if user_input:
 
     try:
         # OpenAI API call
-        response = openai.ChatCompletion.create(
+        client = openai.OpenAI()  # Ensure you're using OpenAI's new client system
+        response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[{"role": m["role"], "content": m["content"]} for m in st.session_state.messages]
         )
         
         # Get AI response
-        ai_reply = response["choices"][0]["message"]["content"]
+        ai_reply = response.choices[0].message.content
 
         # Append AI response
         st.session_state.messages.append({"role": "assistant", "content": ai_reply})
@@ -45,8 +46,7 @@ if user_input:
         with st.chat_message("assistant"):
             st.markdown(ai_reply)
 
-    except openai.error.AuthenticationError:
+    except openai.AuthenticationError:
         st.error("🚨 Invalid API Key! Please check your OpenAI API key.")
-    except openai.error.OpenAIError as e:
+    except openai.OpenAIError as e:
         st.error(f"⚠️ OpenAI API Error: {e}")
-
