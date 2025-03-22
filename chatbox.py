@@ -2,7 +2,7 @@ import streamlit as st
 import openai
 
 # Set your OpenAI API key
-openai.api_key = "your_openai_api_key_here"
+openai.api_key = "AIzaSyBZZ6JSwO7V6dH2I6qqLUH8_v9OiQGDO_o"
 
 # Streamlit UI
 st.title("🧠 Mental Health Chatbox")
