@@ -1,8 +1,9 @@
 import streamlit as st
 import openai
 
-# Set your OpenAI API key
+# Set up OpenAI API
 openai.api_key = "AIzaSyBZZ6JSwO7V6dH2I6qqLUH8_v9OiQGDO_o"
+client = openai.OpenAI()  # Create an OpenAI client
 
 # Streamlit UI
 st.title("🧠 Mental Health Chatbox")
@@ -25,11 +26,11 @@ if user_input:
     st.session_state.messages.append({"role": "user", "content": user_input})
 
     # Generate AI response
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[{"role": m["role"], "content": m["content"]} for m in st.session_state.messages]
     )
-    ai_reply = response["choices"][0]["message"]["content"]
+    ai_reply = response.choices[0].message.content
 
     # Add AI response to history
     st.session_state.messages.append({"role": "assistant", "content": ai_reply})
