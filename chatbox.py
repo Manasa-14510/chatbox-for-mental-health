@@ -1,22 +1,11 @@
-import streamlit as st
 import openai
+import streamlit as st
 import os
 
-# ✅ Ensure the API key is set correctly
-API_KEY = os.getenv("OPENAI_API_KEY")
+# Set OpenAI API key
+openai.api_key = "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"  # Replace with your actual API key
 
-if not API_KEY:
-    st.error("🚨 OpenAI API Key is missing! Please set it in environment variables.")
-    st.stop()  # Stop execution if API key is missing
-
-# ✅ Set API Key for OpenAI
-openai.api_key = API_KEY  # Correct way to initialize API key
-
-# Streamlit app UI
-st.title("🧠 Mental Health Chatbox")
-st.write("Feel free to talk. I'm here to listen. 💙")
-
-# Initialize chat history
+# Initialize chat history in session state if not already present
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
@@ -34,7 +23,7 @@ if user_input:
 
     try:
         # OpenAI API call
-        response = openai.ChatCompletion.create(  # ✅ Fixed client call
+        response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[{"role": m["role"], "content": m["content"]} for m in st.session_state.messages]
         )
